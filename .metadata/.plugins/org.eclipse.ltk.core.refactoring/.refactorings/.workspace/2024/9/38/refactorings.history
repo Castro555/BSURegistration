@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;mikrotik-java-master&apos;" deleteContents="false" description="Delete resource &apos;mikrotik-java-master&apos;" element1="/mikrotik-java-master" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1726592380337"/>
+</session>

@@ -1,0 +1,18 @@
+package cv.ucc.bsuregistration;
+
+import javax.net.SocketFactory;
+
+import examples.Config;
+import me.legrange.mikrotik.*;
+import me.legrange.mikrotik.impl.*;
+
+public class BSURegistration {
+
+	public static void main(String[] args) throws MikrotikApiException {
+		// TODO Auto-generated method stub
+		
+		ApiConnection con = ApiConnection.connect(SocketFactory.getDefault(), "192.168.88.1", ApiConnection.DEFAULT_PORT, 2000);
+        con.login("admin", "");
+	}
+
+}

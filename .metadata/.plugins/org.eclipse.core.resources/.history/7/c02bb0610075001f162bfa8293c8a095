@@ -1,0 +1,33 @@
+package cv.ucc.bsuregistration;
+
+import libAPI.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class BSURegistration {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		char[] pass = new String("%p#0ad1111n").toCharArray();
+		ApiConn ret = new ApiConn("192.168.88.1", 8728);
+		if(!ret.isConnected()) {
+			System.out.println("Not connect");
+			ret.start();
+			try {
+				ret.join();
+				if(ret.isConnected()) {
+					ret.login("admin", pass);
+				} 
+			} catch(InterruptedException ex) {
+				Logger.getLogger("This Class").log(Level.SEVERE, null, ex);
+				
+				return null;
+			}
+		}
+		ret.sendCommand("/ip/address/print");		
+		//DataReceiver dataRec = new DataReceiver(ret, this);
+		//dataRec.start();
+	}
+
+}

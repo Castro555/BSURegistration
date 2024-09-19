@@ -1,0 +1,19 @@
+package cv.ucc.bsuregistration;
+
+import javax.net.SocketFactory;
+
+import examples.Config;
+import me.legrange.mikrotik.*;
+import me.legrange.mikrotik.impl.*;
+import examples.*;
+
+public class BSURegistration extends Example {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		BSURegistration con = new BSURegistration();
+		con.connect();
+	}
+
+}

@@ -1,0 +1,13 @@
+package cv.ucc.bsuregistration;
+
+import me.legrange.mikrotik.*;
+import me.legrange.mikrotik.impl.*;
+
+public class BSURegistration {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

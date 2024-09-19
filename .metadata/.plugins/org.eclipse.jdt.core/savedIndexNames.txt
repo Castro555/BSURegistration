@@ -1,0 +1,6 @@
+INDEX VERSION 1.132+C:\Users\helio\eclipse-workspace\BSU_Registration\.metadata\.plugins\org.eclipse.jdt.core
+332383186.index
+2328269416.index
+1865797976.index
+3684069256.index
+3508828460.index

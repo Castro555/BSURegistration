@@ -1,0 +1,60 @@
+package cv.ucc.bsuregistration;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.net.SocketFactory;
+
+import examples.Config;
+import me.legrange.mikrotik.*;
+import me.legrange.mikrotik.impl.*;
+import examples.*;
+
+public class BSURegistration {
+
+	
+	
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		
+		BSURegistration bsu = new BSURegistration();
+		
+		if(bsu.connect()) {			
+			bsu.getRegistration();
+			bsu.disconnect();
+		} else {
+			System.out.println("Not connected");
+		}
+	}
+
+	
+	
+	public BSURegistration() {
+		super();
+	}
+
+	protected boolean connect() throws Exception {
+        con = ApiConnection.connect(SocketFactory.getDefault(), Config.HOST, ApiConnection.DEFAULT_PORT, 2000);
+        if(!con.isConnected()) {
+        	return false;
+        }
+       	con.login(Config.USERNAME, Config.PASSWORD);
+       	return true;
+    }
+
+    protected void disconnect() throws Exception {
+        con.close();
+    }
+    
+    protected void getRegistration() throws MikrotikApiException, InterruptedException {
+    	List<Map<String, String>> results 
+    		= con.execute("/interface/wireless/registration-table/print count-only");
+        
+    	for (Map<String, String> result : results) {
+    		String count;
+            System.out.println(result);
+        }
+    }
+    
+    protected ApiConnection con;
+}
