@@ -8,6 +8,8 @@ import javax.net.SocketFactory;
 
 import examples.Config;
 import me.legrange.mikrotik.*;
+import me.legrange.mikrotik.impl.*;
+import examples.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
