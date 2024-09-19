@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 import javax.net.SocketFactory;
 
-import examples.Config;
 import me.legrange.mikrotik.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.File;
 
 public class BSURegistration {
 	
@@ -17,48 +19,56 @@ public class BSURegistration {
 		// TODO Auto-generated method stub
 		
 		List<BSURegistration> bsus = new ArrayList<>();
+		List<String> passes = new ArrayList<>();
+		
+		passes.add("TRM@Unitel@123");
+		passes.add("%p#0ad1111n");
+		passes.add("admin");
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("IpList.txt"));
 			String line;
 			while((line = reader.readLine()) != null) {
-				BSURegistration bsu = new BSURegistration(line);
-				//System.out.println(bsu.ip);
+				BSURegistration bsu = new BSURegistration(line);				
 				
-				if(bsu.connect(bsu.ip)) {
-					bsu.registration = bsu.getRegistration();
-					bsu.disconnect();
-				} else {
-					System.out.println("Not connected");
+				for(String pass : passes) {
+					if(bsu.connect(bsu.ip, pass)) {
+						bsu.registration = bsu.getRegistration();
+						bsu.disconnect();
+						break;
+					}
 				}
-				
 				bsus.add(bsu);
 				bsu = null;
 			}
 			
+			//File file = new File("registration.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter("registration.csv"));
 			for (BSURegistration su : bsus) {
 				System.out.println(su);
+				writer.write(su.toString());
+				writer.newLine();
 			}
+			//writer.flush();
+			writer.close();
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	
+	}	
 	
 	public BSURegistration(String ip) {
 		super();
 		this.ip = ip;
 	}
 
-	protected boolean connect(String address) throws Exception {
+	protected boolean connect(String address, String pass) throws Exception {
         try {
         	con = ApiConnection.connect(SocketFactory.getDefault(), address, ApiConnection.DEFAULT_PORT, 2000);
         	try {
-        		con.login(Config.USERNAME, Config.PASSWORD);
+        		con.login(Config.USERNAME, pass);
         	} catch(MikrotikApiException ex) {
-        		ex.printStackTrace();
+        		return false;
         	}
         	return true;
         } catch(ApiConnectionException ex) {        	
@@ -85,7 +95,7 @@ public class BSURegistration {
     
     @Override
     public String toString(){
-    	return "ip:"+this.ip + " " + "registration:"+this.registration; 
+    	return this.ip + "," + this.registration; 
     }
     
     protected ApiConnection con;
