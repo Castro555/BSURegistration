@@ -24,7 +24,7 @@ public class BSURegistration {
 		//passes.add("TRM@Unitel@123");
 		passes.add("admin");
 		passes.add("");
-		int counter = 0;
+		//int counter = 0;
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("IpList.txt"));
@@ -46,8 +46,9 @@ public class BSURegistration {
 				}
 				bsus.add(bsu);
 				bsu = null;
-				counter++;
+				//counter++;
 			}
+			reader.close();
 			
 			//File file = new File("registration.txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter("registration.csv"));
