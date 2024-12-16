@@ -21,9 +21,10 @@ public class BSURegistration {
 		List<BSURegistration> bsus = new ArrayList<>();
 		List<String> passes = new ArrayList<>();
 		
-		passes.add("TRM@Unitel@123");
-		passes.add("%p#0ad1111n");
+		//passes.add("TRM@Unitel@123");
 		passes.add("admin");
+		passes.add("");
+		int counter = 0;
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("IpList.txt"));
@@ -34,18 +35,23 @@ public class BSURegistration {
 				for(String pass : passes) {
 					if(bsu.connect(bsu.ip, pass)) {
 						bsu.registration = bsu.getRegistration();
+						if (bsu.registration != null) {
+							bsu.radio_name = bsu.registration.split(",")[0];
+							bsu.ssid = bsu.registration.split(",")[1];
+						}
+						System.out.println(bsu);
 						bsu.disconnect();
 						break;
 					}
 				}
 				bsus.add(bsu);
 				bsu = null;
+				counter++;
 			}
 			
 			//File file = new File("registration.txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter("registration.csv"));
 			for (BSURegistration su : bsus) {
-				System.out.println(su);
 				writer.write(su.toString());
 				writer.newLine();
 			}
@@ -82,23 +88,39 @@ public class BSURegistration {
     
     protected String getRegistration() throws MikrotikApiException, InterruptedException {
     	List<Map<String, String>> results 
-    		= con.execute("/interface/wireless/registration-table/print count-only");
+    		= con.execute("/interface/wireless/print");
         
     	String registration = null;
+    	String ssid = null;
+    	String radio_name = null;
     	for (Map<String, String> result : results) {
-    		registration = result.values().toString();
+    		if(result.get("radio-name") != null) {
+    			radio_name = result.get("radio-name");
+    		}
+    		if(result.get("ssid") != null) {
+    			ssid = result.get("ssid");
+    		}
+    		
+    		//System.out.println(result);
+    		registration = radio_name + "," + ssid;
             //System.out.println(registration);
         }
+    	
+    	//System.out.println(radio_name);
+    	//System.out.println(ssid);
+    	//sSystem.out.println(registration);
     	
     	return registration;
     }
     
     @Override
     public String toString(){
-    	return this.ip + "," + this.registration; 
+    	return this.ip + "," + this.ssid + "," + this.radio_name;
     }
     
     protected ApiConnection con;
     protected String ip;
     protected String registration;
+    protected String ssid;
+    protected String radio_name;
 }
