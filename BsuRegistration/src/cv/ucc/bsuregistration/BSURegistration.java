@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.File;
 
 public class BSURegistration {
 	
@@ -32,18 +31,22 @@ public class BSURegistration {
 			while((line = reader.readLine()) != null) {
 				BSURegistration bsu = new BSURegistration(line);				
 				
-				for(String pass : passes) {
-					if(bsu.connect(bsu.ip, pass)) {
-						bsu.registration = bsu.getRegistration();
-						if (bsu.registration != null) {
-							bsu.radio_name = bsu.registration.split(",")[0];
-							bsu.ssid = bsu.registration.split(",")[1];
+				if (bsu.isOnline(bsu.ip)) {
+					bsu.status = "online";
+					for(String pass : passes) {
+						if(bsu.connect(bsu.ip, pass)) {
+							bsu.registration = bsu.getRegistration();
+							if (bsu.registration != null) {
+								bsu.radio_name = bsu.registration.split(",")[0];
+								bsu.ssid = bsu.registration.split(",")[1];
+							}
+							System.out.println(bsu);
+							bsu.disconnect();
+							break;
 						}
-						System.out.println(bsu);
-						bsu.disconnect();
-						break;
 					}
 				}
+				
 				bsus.add(bsu);
 				bsu = null;
 				//counter++;
@@ -67,20 +70,25 @@ public class BSURegistration {
 	public BSURegistration(String ip) {
 		super();
 		this.ip = ip;
+		this.status = "offline";
 	}
 
-	protected boolean connect(String address, String pass) throws Exception {
-        try {
-        	con = ApiConnection.connect(SocketFactory.getDefault(), address, ApiConnection.DEFAULT_PORT, 2000);
-        	try {
-        		con.login(Config.USERNAME, pass);
-        	} catch(MikrotikApiException ex) {
-        		return false;
-        	}
-        	return true;
-        } catch(ApiConnectionException ex) {        	
+	protected boolean isOnline(String address) throws Exception {
+		try {
+			con = ApiConnection.connect(SocketFactory.getDefault(), address, ApiConnection.DEFAULT_PORT, 2000);
+			return true;
+		} catch(ApiConnectionException ex) {        	
         	return false;
         }
+	}
+	
+	protected boolean connect(String address, String pass) throws Exception {
+		try {
+    		con.login(Config.USERNAME, pass);
+    	} catch(MikrotikApiException ex) {
+    		return false;
+    	}
+    	return true;
     }
 
     protected void disconnect() throws Exception {
@@ -116,7 +124,7 @@ public class BSURegistration {
     
     @Override
     public String toString(){
-    	return this.ip + "," + this.ssid + "," + this.radio_name;
+    	return this.ip + "," + this.ssid + "," + this.radio_name + "," + this.status;
     }
     
     protected ApiConnection con;
@@ -124,4 +132,5 @@ public class BSURegistration {
     protected String registration;
     protected String ssid;
     protected String radio_name;
+    protected String status;
 }
