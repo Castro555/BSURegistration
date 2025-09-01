@@ -2,15 +2,10 @@ package cv.ucc.bsuregistration;
 
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 import javax.net.SocketFactory;
 
 import me.legrange.mikrotik.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 
 public class BSURegistration {
 	
@@ -20,7 +15,7 @@ public class BSURegistration {
 		int numParts = 128;
 		
 		FileManagement.splitFile(inputFile, numParts);
-		// MultiThreadsProcessor.runThreads(numParts);
+		MultiThreadsProcessor.runThreads(numParts);
 		FileManagement.mergeFile(numParts);
 
 	}	
