@@ -23,6 +23,7 @@ public class FileManagement {
 			while ((line = reader.readLine()) != null) {
 				lines.add(line);
 			}
+			reader.close();
 		}
 		
 		int totalLines = lines.size();
@@ -37,6 +38,7 @@ public class FileManagement {
 					writer.write(lines.get(j));
 					writer.newLine();
 				}
+				writer.close();
 			}
 		}
 		
