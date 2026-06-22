@@ -12,7 +12,7 @@ public class BSURegistration {
 	public static void main(String[] args) throws Exception {
 
 		String inputFile = "IpList.txt";
-		int numParts = 128;
+		int numParts = 1;
 		
 		FileManagement.splitFile(inputFile, numParts);
 		MultiThreadsProcessor.runThreads(numParts);
