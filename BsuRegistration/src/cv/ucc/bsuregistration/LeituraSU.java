@@ -7,7 +7,7 @@ import javax.net.SocketFactory;
 
 import me.legrange.mikrotik.*;
 
-public class BSURegistration {
+public class LeituraSU {
 	
 	public static void main(String[] args) throws Exception {
 
@@ -20,7 +20,7 @@ public class BSURegistration {
 
 	}	
 	
-	public BSURegistration(String ip) {
+	public LeituraSU(String ip) {
 		super();
 		this.ip = ip;
 		this.status = "offline";

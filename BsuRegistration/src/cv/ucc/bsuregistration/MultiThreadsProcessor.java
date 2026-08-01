@@ -36,7 +36,7 @@ public class MultiThreadsProcessor {
 				
 				while((line = reader.readLine()) != null) {
 	
-					BSURegistration su = new BSURegistration(line);				
+					LeituraSU su = new LeituraSU(line);				
 					
 					if (su.isOnline(su.ip)) {
 						su.status = "online";
