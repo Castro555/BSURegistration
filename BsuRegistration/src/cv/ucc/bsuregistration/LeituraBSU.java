@@ -90,6 +90,15 @@ public class LeituraBSU {
 	            //System.out.println(registration);
 	        }
 	    	
+	    	if (registration.equals("[0]")) {
+	    		results = con.execute("/interface/w60g/station/print count-only");
+	    		for (Map<String, String> result : results) {
+	    			System.out.println(result.toString());
+		    		registration = result.values().toString();
+		            //System.out.println(registration);
+		        }
+	    	}
+	    	
 	    	return registration;
     	} catch(Exception ex) {
 			ex.printStackTrace();
