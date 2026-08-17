@@ -2,7 +2,6 @@ package cv.ucc.bsuregistration;
 
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 import javax.net.SocketFactory;
 
@@ -16,14 +15,7 @@ public class LeituraBSUether {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		
-		List<String> passes = new ArrayList<>();
-		
-		passes.add("TRM@Unitel@123");
-		//passes.add("%p#0ad1111n");
-		passes.add("admin");
-		passes.add("");
-		
+
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("IpList.txt"));
 			String line;
@@ -36,7 +28,7 @@ public class LeituraBSUether {
 			while((line = reader.readLine()) != null) {
 				LeituraBSUether bsu = new LeituraBSUether(line);				
 				
-				for(String pass : passes) {
+				for(String pass : Config.PASSWORDS) {
 					if(bsu.connect(bsu.ip, pass)) {
 						bsu.registration = bsu.getRegistration();
 						System.out.println(bsu.toString());
