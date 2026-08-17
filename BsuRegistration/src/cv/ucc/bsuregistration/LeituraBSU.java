@@ -2,7 +2,6 @@ package cv.ucc.bsuregistration;
 
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 import javax.net.SocketFactory;
 
@@ -16,14 +15,7 @@ public class LeituraBSU {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		
-		List<String> passes = new ArrayList<>();
-		
-		passes.add("TRM@Unitel@123");
-		//passes.add("%p#0ad1111n");
-		passes.add("admin");
-		passes.add("");
-		
+
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("IpList.txt"));
 			String line;
@@ -36,7 +28,7 @@ public class LeituraBSU {
 				
 				System.out.println(bsu.toString());
 				
-				for(String pass : passes) {
+				for(String pass : Config.PASSWORDS) {
 					if(bsu.connect(bsu.ip, pass)) {
 						bsu.registration = bsu.getRegistration();
 						writer.write(bsu.toString());
@@ -90,19 +82,29 @@ public class LeituraBSU {
 	            //System.out.println(registration);
 	        }
 	    	
-	    	if (registration.equals("[0]")) {
+	    	// Se a registration-table não devolver nenhum resultado, assume-se 0 registos.
+	    	if (registration == null) {
+	    		registration = "0";
+	    	}
+	    	
+	    	if (registration.equals("[0]") || registration.equals("0")) {
 	    		results = con.execute("/interface/w60g/station/print count-only");
+	    		
+	    		String w60gRegistration = null;
 	    		for (Map<String, String> result : results) {
 	    			System.out.println(result.toString());
-		    		registration = result.values().toString();
+		    		w60gRegistration = result.values().toString();
 		            //System.out.println(registration);
 		        }
+	    		
+	    		// Idem para o w60g: se vazio, mantém-se em 0.
+	    		registration = (w60gRegistration != null) ? w60gRegistration : "0";
 	    	}
 	    	
 	    	return registration;
     	} catch(Exception ex) {
 			ex.printStackTrace();
-			return "";
+			return "0";
     	}
     }
     
