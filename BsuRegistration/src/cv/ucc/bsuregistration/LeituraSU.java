@@ -8,12 +8,22 @@ import javax.net.SocketFactory;
 import me.legrange.mikrotik.*;
 
 public class LeituraSU {
-	
+
+	// Número de IPs por parte (thread). Ajustar conforme a carga desejada.
+	private static final int IPS_POR_PARTE = 100;
+
 	public static void main(String[] args) throws Exception {
 
 		String inputFile = "IpList.txt";
-		int numParts = 1;
-		
+
+		// Conta as linhas de forma eficiente (sem carregar o ficheiro todo para
+		// uma List) e calcula o número de partes: 1 parte por cada 100 IPs,
+		// com um mínimo de 1 parte.
+		long totalLines = FileManagement.countLines(inputFile);
+		int numParts = (int) Math.max(1, totalLines / IPS_POR_PARTE);
+
+		System.out.println("Total de IPs: " + totalLines + " | numParts: " + numParts);
+
 		FileManagement.splitFile(inputFile, numParts);
 		MultiThreadsProcessor.runThreads(numParts);
 		FileManagement.mergeFile(numParts);

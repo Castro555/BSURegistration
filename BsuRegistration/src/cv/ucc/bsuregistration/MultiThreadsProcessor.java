@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -27,11 +25,6 @@ public class MultiThreadsProcessor {
 				BufferedReader reader = new BufferedReader(new FileReader(fileNameR));
 				BufferedWriter writer = new BufferedWriter(new FileWriter(fileNameW));
 				
-				List<String> passes = new ArrayList<>();
-				
-				passes.add("admin");
-				passes.add("");
-				
 				String line;
 				
 				while((line = reader.readLine()) != null) {
@@ -40,7 +33,7 @@ public class MultiThreadsProcessor {
 					
 					if (su.isOnline(su.ip)) {
 						su.status = "online";
-						for(String pass : passes) {
+						for(String pass : Config.PASSWORDS) {
 							if(su.connect(su.ip, pass)) {
 								su.registration = su.getRegistration();
 								if (su.registration != null) {
