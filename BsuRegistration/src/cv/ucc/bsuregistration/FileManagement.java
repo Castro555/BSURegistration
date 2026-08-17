@@ -12,9 +12,23 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FileManagement {
-	
+
+	/**
+	 * Conta o número de linhas de um ficheiro de forma eficiente, usando
+	 * Files.lines() (leitura em stream, sem carregar todas as linhas para
+	 * memória de uma vez, ao contrário de splitFile). Útil para decidir
+	 * dinamicamente o número de partes (numParts) a usar no processamento
+	 * paralelo, sem ter de ler o ficheiro "à conta" manualmente.
+	 */
+	public static long countLines(String inputFile) throws IOException {
+		try (Stream<String> lines = Files.lines(Paths.get(inputFile))) {
+			return lines.count();
+		}
+	}
+
 	public static void splitFile(String inputFile, int numParts) throws IOException {
 		List<String> lines = new ArrayList<>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
