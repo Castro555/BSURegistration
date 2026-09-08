@@ -1,8 +1,7 @@
 package cv.ucc.bsuregistration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class Config {
 
@@ -12,8 +11,8 @@ public class Config {
     // Lista de passwords a tentar, por ordem, ao autenticar nos equipamentos.
     // Todas as classes (LeituraBSU, LeituraBSUether, MultiThreadsProcessor) devem
     // ler esta lista em vez de manterem cada uma a sua própria cópia.
-    public static final List<String> PASSWORDS = Collections.unmodifiableList(
-            Arrays.asList(
+    public static final ArrayList<String> PASSWORDS = new ArrayList<String>(
+    		Arrays.asList(
                     "TRM@Unitel@123",
                     "admin",
                     ""
